@@ -65,7 +65,12 @@ Game::~Game()
 void Game::Update()
 {
 	// Set background color to white and clear the screen
-	SDL_SetRenderDrawColor(Utils::Renderer, 255, 255, 255, 255);
+	if(SceneManager == WelcomeScene)
+		SDL_SetRenderDrawColor(Utils::Renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+
+	else
+		SDL_SetRenderDrawColor(Utils::Renderer, WHITE.r, WHITE.g, WHITE.b, WHITE.a);
+
 	SDL_RenderClear(Utils::Renderer);
 
 	HandleEvents();
@@ -87,8 +92,8 @@ void Game::WelcomeScreen()
 {
 	SDL_Rect TwoPlayerRect, OnePlayerRect;
 
-	OnePlayerRect = { 0, 0, Utils::ScreenWidth / 2,  Utils::ScreenHeight };
-	TwoPlayerRect = { Utils::ScreenWidth / 2, 0, Utils::ScreenWidth / 2,  Utils::ScreenHeight };
+	OnePlayerRect = { 30, 230,  340, 80 };
+	TwoPlayerRect = { 430, 230, 350,  80 };
 
 	SDL_SetRenderDrawColor(Utils::Renderer, 0, 255, 0, 255);	
 	SDL_RenderFillRect(Utils::Renderer, &OnePlayerRect);
@@ -98,86 +103,93 @@ void Game::WelcomeScreen()
 
 	static SDL_Rect OnePlayerTextRect{ 50, 250, 300, 40 };
 	static SDL_Rect TwoPlayerTextRect{ 450, 250, 300, 40 };
-	static bool ShrinkOne = false;
-	static bool ShrinkTwo = false;
+	static bool FirstButtonExpand = false;
+	static bool SecondButtonExpand = false;
 
-
-	if (Utils::MouseX > OnePlayerRect.x && Utils::MouseX < OnePlayerRect.x + OnePlayerRect.w)
+	if (Utils::MouseX > OnePlayerRect.x && Utils::MouseX < OnePlayerRect.x + OnePlayerRect.w && Utils::MouseY > OnePlayerRect.y && Utils::MouseY < OnePlayerRect.y + OnePlayerRect.h)
 	{
 		if (Utils::MouseLeft)
 		{
 			SceneManager = OnePlayerGame;
 		}
 
-		//Animation effect
-		if (ShrinkOne) {
-			OnePlayerTextRect.w += 2;
-			OnePlayerTextRect.h += 2;
-			OnePlayerTextRect.x -= 1;
-			OnePlayerTextRect.y -= 1;
-			if (OnePlayerTextRect.w >= 335)
-			{
-				ShrinkOne = false;
-			}
-		}
+		FirstButtonExpand = true;
 	}
 	else
 	{
-		if (!ShrinkOne)
-		{
-			OnePlayerTextRect.w -= 2;
-			OnePlayerTextRect.h -= 2;
-			OnePlayerTextRect.x += 1;
-			OnePlayerTextRect.y += 1;
-			if (OnePlayerTextRect.w <= 300)
-			{
-				ShrinkOne = true;
-				OnePlayerTextRect = { 50, 250, 300, 40 };
-			}
-		}
+		FirstButtonExpand = false;
 	}
 
-	if (Utils::MouseX > TwoPlayerRect.x && Utils::MouseX < TwoPlayerRect.x + TwoPlayerRect.w-1)
+	if (Utils::MouseX > TwoPlayerRect.x && Utils::MouseX < TwoPlayerRect.x + TwoPlayerRect.w && Utils::MouseY > TwoPlayerRect.y && Utils::MouseY < TwoPlayerRect.y + TwoPlayerRect.h)
 	{
 		if (Utils::MouseLeft)
 		{
 			SceneManager = TwoPlayerGame;
 		}
-		//Animation effect
-		if (ShrinkTwo) {
-			TwoPlayerTextRect.w += 2;
-			TwoPlayerTextRect.h += 2;
-			TwoPlayerTextRect.x -= 1;
-			TwoPlayerTextRect.y -= 1;
-			if (TwoPlayerTextRect.w >= 335)
-			{
-				ShrinkTwo = false;
-			}
-		}
+		
+		SecondButtonExpand = true;
+
 	}
 	else
 	{
-		if (!ShrinkTwo)
-		{
-			TwoPlayerTextRect.w -= 2;
-			TwoPlayerTextRect.h -= 2;
-			TwoPlayerTextRect.x += 1;
-			TwoPlayerTextRect.y += 1;
-			if (TwoPlayerTextRect.w <= 300)
-			{
-				TwoPlayerTextRect = { 450, 250, 300, 40 };
-				ShrinkTwo = true;
-			}
-		}
+		SecondButtonExpand = false;
 	}
 
-	
-	std::cout << OnePlayerTextRect.w << std::endl;
+	//Animation effect for First Button
+	if (FirstButtonExpand)
+	{
+		ExpandAnimation(OnePlayerTextRect, FirstButtonExpand);
+	}
+
+	if (!FirstButtonExpand)
+	{
+		ShrinkAnimation(OnePlayerTextRect, FirstButtonExpand);
+	}
+
+	//Animation effect for Second Button
+	if (SecondButtonExpand) 
+	{
+		ExpandAnimation(TwoPlayerTextRect, SecondButtonExpand);
+	}
+
+	if (!SecondButtonExpand)
+	{
+		ShrinkAnimation(TwoPlayerTextRect, SecondButtonExpand);
+	}
 
 	SDL_RenderCopy(Utils::Renderer, Utils::OnePlayer, NULL, &OnePlayerTextRect);
 	SDL_RenderCopy(Utils::Renderer, Utils::TwoPlayer, NULL, &TwoPlayerTextRect);
 }
 
+void Game::ExpandAnimation(SDL_Rect& transform, bool& animationController)
+{
+	if (transform.w >= 335)
+	{
+		animationController = false;
+	}
+	else
+	{
+		transform.w += 2;
+		transform.h += 2;
+		transform.x -= 1;
+		transform.y -= 1;
+	}
+}
+
+void Game::ShrinkAnimation(SDL_Rect& transform, bool& animationController)
+{
+	if (transform.w <= 300)
+	{
+		animationController = true;
+	}
+	else
+	{
+		transform.w -= 2;
+		transform.h -= 2;
+		transform.x += 1;
+		transform.y += 1;
+	}
+}
 //Game Loop
 void Game::GameLoop()
 {
@@ -317,13 +329,13 @@ void Game::BallLogic()
 		{
 			keyPressed = 0;
 			Player2.score++;
-			Utils::UpdateTexture(std::to_string(Player2.score), Utils::TwoPlayerPoint);
+			Utils::UpdateTexture(std::to_string(Player2.score), Utils::InGameFont, Utils::TwoPlayerPoint, BLACK);
 		}
 		else if (Ball.rect.x + Ball.rect.w >= Utils::ScreenWidth)
 		{
 			keyPressed = 0;
 			Player1.score++;
-			Utils::UpdateTexture(std::to_string(Player1.score), Utils::OnePlayerPoint);
+			Utils::UpdateTexture(std::to_string(Player1.score), Utils::InGameFont, Utils::OnePlayerPoint, BLACK);
 
 		}
 		Ball.velocityX = Ball.velocityX * -1;
@@ -384,7 +396,7 @@ void Game::RestartGameIfNeeded()
 		{
 			Ball.ballSpeed++;
 		}
-		ResetBallPosition();
+		ResetPositions();
 
 		// Display the "Press any key" warning
 		
@@ -407,12 +419,15 @@ void Game::RestartGameIfNeeded()
 }
 
 // Helper function to reset the ball's position
-void Game::ResetBallPosition()
+void Game::ResetPositions()
 {
 	Ball.rect.x = 390;
 	Ball.rect.y = 290;
 	Ball.velocityX = 0;
 	Ball.velocityY = 0;
+
+	Player1.rect.y = Utils::ScreenHeight / 2 - Player1.rect.h / 2;
+	Player2.rect.y = Utils::ScreenHeight / 2 - Player2.rect.h / 2;
 }
 
 // Helper function to display the "Press any key" warning

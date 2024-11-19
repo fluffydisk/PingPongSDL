@@ -41,9 +41,12 @@ private:
 	bool InColission(Rect Ball, Rect Paddle);
 
 	int keyPressed;
-	void ResetBallPosition();
+	void ResetPositions();
 	void DisplayPressKeyWarning();
 	void StartBallMovement();
+
+	void ExpandAnimation(SDL_Rect &trasform, bool& animationController);
+	void ShrinkAnimation(SDL_Rect &trasform, bool& animationController);
 
 	void WelcomeScreen();
 	void GameLoop();

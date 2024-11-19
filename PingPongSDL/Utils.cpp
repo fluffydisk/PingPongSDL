@@ -26,62 +26,28 @@ void Utils::init()
 	WelcomeFont = TTF_OpenFont("Dependencies/Fonts/WelcomeScreenFont.ttf", 24);
 	InGameFont = TTF_OpenFont("Dependencies/Fonts/InGameFont.ttf", 24);
 
-	SDL_Surface* tempSurface1 = TTF_RenderText_Solid(WelcomeFont, "One Player (Against Computer)", SDL_Color{255, 255, 255, 255});
-	SDL_Surface* tempSurface2 = TTF_RenderText_Solid(WelcomeFont, "Two Players (Against Human)", SDL_Color{ 255, 255, 255, 255 });
-	SDL_Surface* tempSurface3 = TTF_RenderText_Solid(WelcomeFont, "0", SDL_Color{ 0, 0, 0, 255 });
-	SDL_Surface* tempSurface4 = TTF_RenderText_Solid(WelcomeFont, "0", SDL_Color{ 0, 0, 0, 255 });
-	SDL_Surface* tempSurface5 = TTF_RenderText_Solid(WelcomeFont, "Press any key to start the game!", SDL_Color{ 0, 0, 0, 255 });
-
-	if (!tempSurface1 || !tempSurface2)
-	{
-		std::cout << "Couldnt create Surface from Font" << std::endl;
-		SDL_FreeSurface(tempSurface1);
-		SDL_FreeSurface(tempSurface2);
-		SDL_FreeSurface(tempSurface3);
-		SDL_FreeSurface(tempSurface4);
-		SDL_FreeSurface(tempSurface5);
-		tempSurface1 = nullptr;
-		tempSurface2 = nullptr;
-		tempSurface3 = nullptr;
-		tempSurface4 = nullptr;
-		tempSurface5 = nullptr;
-	}
-	else
-	{
-		OnePlayer = SDL_CreateTextureFromSurface(Renderer, tempSurface1);	
-		TwoPlayer = SDL_CreateTextureFromSurface(Renderer, tempSurface2);
-		OnePlayerPoint = SDL_CreateTextureFromSurface(Renderer, tempSurface3);
-		TwoPlayerPoint = SDL_CreateTextureFromSurface(Renderer, tempSurface4);
-		PressKeyWarning = SDL_CreateTextureFromSurface(Renderer, tempSurface5);
-
-
-		SDL_FreeSurface(tempSurface1);
-		SDL_FreeSurface(tempSurface2);
-		SDL_FreeSurface(tempSurface3);
-		SDL_FreeSurface(tempSurface4);
-		SDL_FreeSurface(tempSurface5);
-		tempSurface1 = nullptr;
-		tempSurface2 = nullptr;
-		tempSurface3 = nullptr;
-		tempSurface4 = nullptr;
-		tempSurface5 = nullptr;
-	}
+	UpdateTexture("Press any key to start the game!", InGameFont,PressKeyWarning, BLACK);
+	UpdateTexture("One Player(Against Computer)", WelcomeFont, OnePlayer, WHITE);
+	UpdateTexture("Two Players (Against Human)", WelcomeFont,TwoPlayer, WHITE);
+	UpdateTexture("0", InGameFont,OnePlayerPoint, BLACK);
+	UpdateTexture("0", InGameFont,TwoPlayerPoint, BLACK);
 }
 
-void Utils::UpdateTexture(std::string point, SDL_Texture*& oldTexture)
+void Utils::UpdateTexture(std::string point, TTF_Font* font, SDL_Texture*& oldTexture, SDL_Color color)
 {
 	// Destroy the old texture
-	if (oldTexture) {
+	if (oldTexture)
+	{
 		SDL_DestroyTexture(oldTexture);
-		oldTexture = nullptr; // Avoid dangling pointer
+		oldTexture = nullptr;
 	}
 
 	// Create a new surface
-	SDL_Surface* tempSurface = TTF_RenderText_Solid(InGameFont, point.c_str(), SDL_Color{ 0, 0, 0, 255 });
+	SDL_Surface* tempSurface = TTF_RenderText_Solid(font, point.c_str(), color);
 	if (!tempSurface)
 	{
 		std::cout << "Could not create Surface from Font: " << TTF_GetError() << std::endl;
-		return; // Exit early
+		return;
 	}
 
 	// Create a new texture from the surface

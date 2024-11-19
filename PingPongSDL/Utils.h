@@ -7,10 +7,14 @@
 class Utils
 {
 public:
+	#define BLACK SDL_Color { 0, 0, 0, 255 }
+	#define WHITE SDL_Color { 255, 255, 255, 255 }
 	static void init();
 
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+
+
 
 	static SDL_Window* Window;
 	static SDL_Renderer* Renderer;
@@ -23,7 +27,7 @@ public:
 	static SDL_Texture* TwoPlayerPoint;
 	static SDL_Texture* PressKeyWarning;
 
-	static void UpdateTexture(std::string point, SDL_Texture*& oldTexture);
+	static void UpdateTexture(std::string point, TTF_Font* font, SDL_Texture*& oldTexture, SDL_Color color);
 
 	static int MouseX, MouseY;
 	static bool MouseLeft, MouseRight;

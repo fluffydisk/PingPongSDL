@@ -1,10 +1,12 @@
 ﻿  Game.cpp
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(350,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(351,43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(354,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(368,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(369,43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(372,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(435,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(436,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(362,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(363,43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(366,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(380,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(381,43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(384,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(450,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Admin\source\repos\PingPongSDL\PingPongSDL\Game.cpp(451,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
   PingPongSDL.vcxproj -> C:\Users\Admin\source\repos\PingPongSDL\x64\Debug\PingPongSDL.exe
