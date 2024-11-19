@@ -397,3 +397,25 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Executables
+*.exe
+*.out
+*.app
+.vs/ 
+
+# Ignore Visual Studio files
+.vs/
+x64/
+Debug/
+x64/Debug
+
+# Include Dependencies folder
+!/PingPongSDL/Dependencies/SDL_image/lib/x64/
+!/PingPongSDL/Dependencies/SDL_core/lib/x64/
+!/PingPongSDL/Dependencies/SDL2_mixer/lib/x64/
+!/PingPongSDL/Dependencies/SDL2_ttf/lib/x64/
+
+
+# Ignore user-specific Visual Studio files
+*.vcxproj.user
+
