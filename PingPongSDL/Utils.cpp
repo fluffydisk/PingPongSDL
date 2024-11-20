@@ -9,6 +9,10 @@ TTF_Font* Utils::InGameFont = nullptr;
 SDL_Texture* Utils::OnePlayer = nullptr; 
 SDL_Texture* Utils::TwoPlayer = nullptr;
 SDL_Texture* Utils::PressKeyWarning = nullptr;
+SDL_Texture* Utils::UnDefetableBot = nullptr;
+SDL_Texture* Utils::Player1 = nullptr;
+SDL_Texture* Utils::Player2 = nullptr;
+SDL_Texture* Utils::WelcomeGame = nullptr;
 
 SDL_Texture* Utils::OnePlayerPoint = nullptr;
 SDL_Texture* Utils::TwoPlayerPoint = nullptr;
@@ -26,11 +30,15 @@ void Utils::init()
 	WelcomeFont = TTF_OpenFont("Dependencies/Fonts/WelcomeScreenFont.ttf", 24);
 	InGameFont = TTF_OpenFont("Dependencies/Fonts/InGameFont.ttf", 24);
 
+	UpdateTexture("Welcome to PingPongSDL game, please choose an option to start", InGameFont, WelcomeGame, WHITE);
 	UpdateTexture("Press any key to start the game!", InGameFont,PressKeyWarning, BLACK);
-	UpdateTexture("One Player(Against Computer)", WelcomeFont, OnePlayer, WHITE);
-	UpdateTexture("Two Players (Against Human)", WelcomeFont,TwoPlayer, WHITE);
+	UpdateTexture("One Player(Against Computer)", WelcomeFont, OnePlayer, BLACK);
+	UpdateTexture("Two Players (Against Human)", WelcomeFont, TwoPlayer, BLACK);
 	UpdateTexture("0", InGameFont,OnePlayerPoint, BLACK);
 	UpdateTexture("0", InGameFont,TwoPlayerPoint, BLACK);
+	UpdateTexture("Undefeatable Bot", InGameFont,UnDefetableBot, BLACK);
+	UpdateTexture("Controls: W and S keys)", InGameFont,Player1, BLACK);
+	UpdateTexture("Controls: Up and Down arrows", InGameFont,Player2, BLACK);
 }
 
 void Utils::UpdateTexture(std::string point, TTF_Font* font, SDL_Texture*& oldTexture, SDL_Color color)
