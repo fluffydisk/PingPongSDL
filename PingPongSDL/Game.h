@@ -48,6 +48,9 @@ private:
 	void ExpandAnimation(SDL_Rect &trasform, bool& animationController);
 	void ShrinkAnimation(SDL_Rect &trasform, bool& animationController);
 
+	void GoToMainMenuButton();
+	void RestartGameButton();
+
 	void WelcomeScreen();
 	void GameLoop();
 	void BallLogic();

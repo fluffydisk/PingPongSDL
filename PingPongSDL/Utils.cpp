@@ -12,7 +12,8 @@ SDL_Texture* Utils::PressKeyWarning = nullptr;
 SDL_Texture* Utils::UnDefetableBot = nullptr;
 SDL_Texture* Utils::Player1 = nullptr;
 SDL_Texture* Utils::Player2 = nullptr;
-SDL_Texture* Utils::WelcomeGame = nullptr;
+SDL_Texture* Utils::WelcomeGameText1 = nullptr;
+SDL_Texture* Utils::WelcomeGameText2 = nullptr;
 
 SDL_Texture* Utils::OnePlayerPoint = nullptr;
 SDL_Texture* Utils::TwoPlayerPoint = nullptr;
@@ -30,9 +31,10 @@ void Utils::init()
 	WelcomeFont = TTF_OpenFont("Dependencies/Fonts/WelcomeScreenFont.ttf", 24);
 	InGameFont = TTF_OpenFont("Dependencies/Fonts/InGameFont.ttf", 24);
 
-	UpdateTexture("Welcome to PingPongSDL game, please choose an option to start", InGameFont, WelcomeGame, WHITE);
+	UpdateTexture("Welcome to PingPongSDL game", InGameFont, WelcomeGameText1, WHITE);
+	UpdateTexture("Please choose an option to start", InGameFont, WelcomeGameText2, WHITE);
 	UpdateTexture("Press any key to start the game!", InGameFont,PressKeyWarning, BLACK);
-	UpdateTexture("One Player(Against Computer)", WelcomeFont, OnePlayer, BLACK);
+	UpdateTexture("One Player (Against Computer)", WelcomeFont, OnePlayer, BLACK);
 	UpdateTexture("Two Players (Against Human)", WelcomeFont, TwoPlayer, BLACK);
 	UpdateTexture("0", InGameFont,OnePlayerPoint, BLACK);
 	UpdateTexture("0", InGameFont,TwoPlayerPoint, BLACK);

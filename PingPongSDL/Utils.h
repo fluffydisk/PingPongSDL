@@ -22,7 +22,8 @@ public:
 	static TTF_Font* WelcomeFont;
 	static TTF_Font* InGameFont;
 
-	static SDL_Texture* WelcomeGame;
+	static SDL_Texture* WelcomeGameText1;
+	static SDL_Texture* WelcomeGameText2;
 	static SDL_Texture* OnePlayer;
 	static SDL_Texture* TwoPlayer;
 	static SDL_Texture* OnePlayerPoint;

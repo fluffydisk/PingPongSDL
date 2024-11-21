@@ -90,11 +90,12 @@ void Game::Update()
 //Welcome Screen loop
 void Game::WelcomeScreen()
 {
-	SDL_Rect TwoPlayerRect, OnePlayerRect, WelcomeGameText;
+	SDL_Rect TwoPlayerRect, OnePlayerRect, WelcomeGameText1, WelcomeGameText2;
 
 	OnePlayerRect = { 30, 400,  340, 80 };
 	TwoPlayerRect = { 430, 400, 350,  80 };
-	WelcomeGameText = { 30, 150,  740, 50 };
+	WelcomeGameText1 = { 30, 150,  740, 50 };
+	WelcomeGameText2 = { 30, WelcomeGameText1.y + WelcomeGameText1.h + 20,  740, 50 };
 
 	SDL_SetRenderDrawColor(Utils::Renderer, WHITE.r, WHITE.g, WHITE.b, WHITE.a);
 	SDL_RenderFillRect(Utils::Renderer, &OnePlayerRect);
@@ -111,6 +112,7 @@ void Game::WelcomeScreen()
 	{
 		if (Utils::MouseLeft)
 		{
+			keyPressed = 0;
 			SceneManager = OnePlayerGame;
 		}
 
@@ -125,6 +127,7 @@ void Game::WelcomeScreen()
 	{
 		if (Utils::MouseLeft)
 		{
+			keyPressed = 0;
 			SceneManager = TwoPlayerGame;
 		}
 		
@@ -160,7 +163,8 @@ void Game::WelcomeScreen()
 
 	SDL_RenderCopy(Utils::Renderer, Utils::OnePlayer, NULL, &OnePlayerTextRect);
 	SDL_RenderCopy(Utils::Renderer, Utils::TwoPlayer, NULL, &TwoPlayerTextRect);
-	SDL_RenderCopy(Utils::Renderer, Utils::WelcomeGame, NULL, &WelcomeGameText);
+	SDL_RenderCopy(Utils::Renderer, Utils::WelcomeGameText1, NULL, &WelcomeGameText1);
+	SDL_RenderCopy(Utils::Renderer, Utils::WelcomeGameText2, NULL, &WelcomeGameText2);
 }
 
 void Game::ExpandAnimation(SDL_Rect& transform, bool& animationController)
@@ -195,6 +199,7 @@ void Game::ShrinkAnimation(SDL_Rect& transform, bool& animationController)
 //Game Loop
 void Game::GameLoop()
 {
+
 	RestartGameIfNeeded();
 
 	if (SceneManager == OnePlayerGame)
@@ -213,19 +218,27 @@ void Game::GameLoop()
 	Ball.UpdatePosition(Ball);
 	BallLogic();
 
-	SDL_Rect OnePlayerPointRect = { 300, 100, 60, 100 };
-	SDL_Rect TwoPlayerPointRect = { 400, 100, 60, 100 };
+	SDL_Rect OnePlayerPointRect = { Utils::ScreenWidth / 2 - 60 - 30, 100, 60, 100 };
+	SDL_Rect TwoPlayerPointRect = { Utils::ScreenWidth / 2 + 30, 100, 60, 100 };
 
 	SDL_RenderCopy(Utils::Renderer, Utils::OnePlayerPoint, NULL, &OnePlayerPointRect);
 	SDL_RenderCopy(Utils::Renderer, Utils::TwoPlayerPoint, NULL, &TwoPlayerPointRect);
+	
 
 	//Set the renderer color black for drawing objects
-	SDL_SetRenderDrawColor(Utils::Renderer, 0, 0, 0, 255); 
+	SDL_SetRenderDrawColor(Utils::Renderer, 0, 0, 0, 255);
 	
 	//Render objects
 	SDL_RenderFillRect(Utils::Renderer, &Player1.rect);
 	SDL_RenderFillRect(Utils::Renderer, &Player2.rect);
 	SDL_RenderFillRect(Utils::Renderer, &Ball.rect);
+
+	GoToMainMenuButton();
+	RestartGameButton();
+
+	SDL_SetRenderDrawColor(Utils::Renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+	SDL_RenderDrawLine(Utils::Renderer, Utils::ScreenWidth / 2, 0, Utils::ScreenWidth / 2, Utils::ScreenHeight);
+
 }
 
 //Takes cares of SDL_Event
@@ -385,6 +398,37 @@ void Game::BallLogic()
 		// Ensure X velocity is negative (moving to the left after hitting Player2)
 		Ball.velocityX = -fabs(Ball.velocityX);
 	}
+}
+
+void Game::RestartGameButton()
+{
+	SDL_Rect RestartGameButton = { Utils::ScreenWidth / 2 , 0, 30, 30 };
+	if (Utils::MouseX >= RestartGameButton.x && Utils::MouseX <= RestartGameButton.x + RestartGameButton.w && Utils::MouseY >= RestartGameButton.y && Utils::MouseY <= RestartGameButton.y + RestartGameButton.h && Utils::MouseLeft)
+	{
+		Player1.score = 0;
+		Player2.score = 0;
+		Utils::UpdateTexture(std::to_string(Player1.score), Utils::InGameFont, Utils::OnePlayerPoint, BLACK);
+		Utils::UpdateTexture(std::to_string(Player2.score), Utils::InGameFont, Utils::TwoPlayerPoint, BLACK);
+		ResetPositions();
+		keyPressed = 0;
+	}
+	SDL_SetRenderDrawColor(Utils::Renderer, 0, 255, 0, 0);
+	SDL_RenderFillRect(Utils::Renderer, &RestartGameButton);
+}
+
+void Game::GoToMainMenuButton()
+{
+	SDL_Rect MainMenuButton = {Utils::ScreenWidth / 2 - 30, 0, 30, 30};
+	if (Utils::MouseX >= MainMenuButton.x && Utils::MouseX <= MainMenuButton.x + MainMenuButton.w && Utils::MouseY >= MainMenuButton.y && Utils::MouseY <= MainMenuButton.y + MainMenuButton.h && Utils::MouseLeft)
+	{
+		SceneManager = WelcomeScene;
+		Player1.score = 0;
+		Player2.score = 0;
+		ResetPositions();
+
+	}
+	SDL_SetRenderDrawColor(Utils::Renderer, 255, 0, 0, 0);
+	SDL_RenderFillRect(Utils::Renderer, &MainMenuButton);
 }
 
 void Game::RestartGameIfNeeded()
