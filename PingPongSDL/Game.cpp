@@ -64,6 +64,7 @@ Game::~Game()
 
 void Game::Update()
 {
+	std::cout << Ball.ballSpeed << std::endl;
 	// Set background color to white and clear the screen
 	if(SceneManager == WelcomeScene)
 		SDL_SetRenderDrawColor(Utils::Renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
@@ -402,34 +403,66 @@ void Game::BallLogic()
 
 void Game::RestartGameButton()
 {
-	SDL_Rect RestartGameButton = { Utils::ScreenWidth / 2 , 0, 30, 30 };
-	if (Utils::MouseX >= RestartGameButton.x && Utils::MouseX <= RestartGameButton.x + RestartGameButton.w && Utils::MouseY >= RestartGameButton.y && Utils::MouseY <= RestartGameButton.y + RestartGameButton.h && Utils::MouseLeft)
+	SDL_Rect RestartGameButton = { Utils::ScreenWidth / 2 + 40, 10, 120, 50 }; // Larger button size
+	bool hover = (Utils::MouseX >= RestartGameButton.x && Utils::MouseX <= RestartGameButton.x + RestartGameButton.w &&
+		Utils::MouseY >= RestartGameButton.y && Utils::MouseY <= RestartGameButton.y + RestartGameButton.h);
+
+	// Change button color on hover
+	if (hover)
+		SDL_SetRenderDrawColor(Utils::Renderer, 0, 200, 0, 255); // Bright green
+	else
+		SDL_SetRenderDrawColor(Utils::Renderer, 0, 150, 0, 255); // Dark green
+
+	SDL_RenderFillRect(Utils::Renderer, &RestartGameButton);
+
+	// Add text label
+	SDL_Rect TextRect = { RestartGameButton.x + 10, RestartGameButton.y + 10, RestartGameButton.w - 20, RestartGameButton.h - 20 };
+	SDL_RenderCopy(Utils::Renderer, Utils::RestartText, NULL, &TextRect);
+
+	// Handle click
+	if (hover && Utils::MouseLeft)
 	{
 		Player1.score = 0;
 		Player2.score = 0;
+		Ball.ballSpeed = 5;
 		Utils::UpdateTexture(std::to_string(Player1.score), Utils::InGameFont, Utils::OnePlayerPoint, BLACK);
 		Utils::UpdateTexture(std::to_string(Player2.score), Utils::InGameFont, Utils::TwoPlayerPoint, BLACK);
 		ResetPositions();
 		keyPressed = 0;
 	}
-	SDL_SetRenderDrawColor(Utils::Renderer, 0, 255, 0, 0);
-	SDL_RenderFillRect(Utils::Renderer, &RestartGameButton);
 }
 
 void Game::GoToMainMenuButton()
 {
-	SDL_Rect MainMenuButton = {Utils::ScreenWidth / 2 - 30, 0, 30, 30};
-	if (Utils::MouseX >= MainMenuButton.x && Utils::MouseX <= MainMenuButton.x + MainMenuButton.w && Utils::MouseY >= MainMenuButton.y && Utils::MouseY <= MainMenuButton.y + MainMenuButton.h && Utils::MouseLeft)
+	SDL_Rect MainMenuButton = { Utils::ScreenWidth / 2 - 160, 10, 120, 50 }; // Larger button size
+	bool hover = (Utils::MouseX >= MainMenuButton.x && Utils::MouseX <= MainMenuButton.x + MainMenuButton.w &&
+		Utils::MouseY >= MainMenuButton.y && Utils::MouseY <= MainMenuButton.y + MainMenuButton.h);
+
+	// Change button color on hover
+	if (hover)
+		SDL_SetRenderDrawColor(Utils::Renderer, 200, 0, 0, 255); // Bright red
+	else
+		SDL_SetRenderDrawColor(Utils::Renderer, 150, 0, 0, 255); // Dark red
+
+	SDL_RenderFillRect(Utils::Renderer, &MainMenuButton);
+
+	// Add text label
+	SDL_Rect TextRect = { MainMenuButton.x + 10, MainMenuButton.y + 10, MainMenuButton.w - 20, MainMenuButton.h - 20 };
+	SDL_RenderCopy(Utils::Renderer, Utils::MenuText, NULL, &TextRect);
+
+	// Handle click
+	if (hover && Utils::MouseLeft)
 	{
 		SceneManager = WelcomeScene;
+		Ball.ballSpeed = 5;
 		Player1.score = 0;
 		Player2.score = 0;
+		Utils::UpdateTexture(std::to_string(Player1.score), Utils::InGameFont, Utils::OnePlayerPoint, BLACK);
+		Utils::UpdateTexture(std::to_string(Player2.score), Utils::InGameFont, Utils::TwoPlayerPoint, BLACK);
 		ResetPositions();
-
 	}
-	SDL_SetRenderDrawColor(Utils::Renderer, 255, 0, 0, 0);
-	SDL_RenderFillRect(Utils::Renderer, &MainMenuButton);
 }
+
 
 void Game::RestartGameIfNeeded()
 {

@@ -30,6 +30,8 @@ public:
 	static SDL_Texture* TwoPlayerPoint;
 	static SDL_Texture* PressKeyWarning;
 	static SDL_Texture* UnDefetableBot;
+	static SDL_Texture* RestartText;
+	static SDL_Texture* MenuText;
 	static SDL_Texture* Player1;
 	static SDL_Texture* Player2;
 
